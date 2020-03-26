@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="text-center">
+    <h1>Пример тестирования сервиса Api</h1>
+</div>
+<br />
+<br />
+<h2>Загрузка файла Excel</h2>
+<form id="upload" class="bg-light" action="https://localhost:44394/api/db/upload/excel" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <input type="file" name="file" class="form-control-file">
+        <small id="emailHelp" class="form-text text-muted">Пример файла находится в wwwroot\data\example.xlsx</small>
+    </div>
+    <button type="submit" class="btn btn-success">Загрузить</button>
+</form>
+<br />
+<br />
+<hr />
+<h2>Получить все записи</h2>
+<form id="getAll" class="bg-light">
+    <button type="submit" class="btn btn-success">Получить</button>
+</form>
+<br />
+<br />
+<hr />
+<h2>Удалить запись</h2>
+<form id="delete" class="bg-light">
+    <div class="form-group">
+        <label>Введите идентификатор</label>
+        <input id="deltext" type="text" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success">Удалить</button>
+</form>
+<br />
+<br />
+<hr />
+<h2>Изменить запись</h2>
+<form id="edit" class="bg-light">
+    <div class="form-group">
+        <label>Введите идентификатор</label>
+        <input id="editId" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Столбец Col1</label>
+        <input id="Col1" name="Col2" type="text" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Столбец Col2</label>
+        <input id="Col2" name="Col2" type="text" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-success">Изменить</button>
+</form>
+
+<script>
+    $(function () {
+         $("#getAll").on("submit", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "GET",
+                url: "https://localhost:44394/api/db/" + $("#deltext").val(),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                },
+                error: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                }
+            });
+         });
+
+         $("#delete").on("submit", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "DELETE",
+                url: "https://localhost:44394/api/db/" + $("#deltext").val(),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                },
+                error: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                }
+            });
+        });
+
+        $("#edit").on("submit", function (e) {
+            e.preventDefault();
+            $.ajax({
+                type: "PUT",
+                url: "https://localhost:44394/api/db/" + $("#editId").val(),
+                contentType: "application/json",
+                dataType: "json",
+                //data: $( this ).serializeArray(),
+                data: JSON.stringify({
+                    Col1: $("#Col1").val(),
+                    Col2: $("#Col2").val()
+                }),
+                success: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                },
+                error: function (response) {
+                    alert(JSON.stringify(response));
+                    console.log(response);
+                }
+            });
+        });
+    });
+</script>
